@@ -4,7 +4,7 @@
 #include <vector>
 #include <cstring>
 #include <iostream>
-#include "Native-libs/Include/aes.h"
+#include "aes.h"
 
 // 🔐 Khóa AES chung
 uint8_t masterKey[32] = {
