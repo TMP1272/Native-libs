@@ -38,4 +38,4 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: native-libs
-        path: Native-Build/Src/Jni/SecretsVault/libs/**/*.so
+        path: Native-Build/Src/Jni/SecretsVault/obj/local/**/*.so
