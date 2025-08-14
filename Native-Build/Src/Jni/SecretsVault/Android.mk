@@ -2,7 +2,7 @@ LOCAL_PATH := $(call my-dir)
 
 include $(CLEAR_VARS)
 LOCAL_MODULE    := secretsvault
-LOCAL_SRC_FILES := decrypt.cpp \../../../../Include/aes.c
+LOCAL_SRC_FILES := decrypt.cpp \Include/aes.c
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/../../../../Include
 
 LOCAL_CFLAGS += -Os -ffunction-sections -fdata-sections
