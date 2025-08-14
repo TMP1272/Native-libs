@@ -5,8 +5,9 @@ LOCAL_MODULE    := secretsvault
 LOCAL_SRC_FILES := decrypt.cpp $(LOCAL_PATH)/../../../../Include/aes.c
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/../../../../Include
 
-LOCAL_CFLAGS += -Os -ffunction-sections -fdata-sections
-LOCAL_LDFLAGS += -Wl,--gc-sections
+LOCAL_STRIP_MODULE := true
+LOCAL_CFLAGS += -Os -flto -ffunction-sections -fdata-sections -fvisibility=hidden
+LOCAL_LDFLAGS += -s -flto -Wl,--gc-sections
 LOCAL_LDLIBS += -llog
 
 include $(BUILD_SHARED_LIBRARY)
