@@ -21,7 +21,7 @@ jobs:
 
     - name: 🛠️ Build native library (.so)
       run: |
-        cd Native-libs/Native-Build/Src/Jni/SecretsVault
+        cd Native-Build/Src/Jni/SecretsVault
         ndk-build NDK_PROJECT_PATH=. \
           APP_BUILD_SCRIPT=Android.mk \
           NDK_APPLICATION_MK=Application.mk \
@@ -29,7 +29,7 @@ jobs:
 
     - name: 🔪 Strip symbols to reduce size
       run: |
-        find Native-libs/Native-Build/Src/Jni/SecretsVault/libs -name "*.so" | while read sofile; do
+        find Native-Build/Src/Jni/SecretsVault/libs -name "*.so" | while read sofile; do
           echo "Stripping $sofile"
           $ANDROID_NDK/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-strip "$sofile"
         done
@@ -38,4 +38,4 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: native-libs
-        path: Native-libs/Native-Build/Src/Jni/SecretsVault/libs/**/*.so
+        path: Native-Build/Src/Jni/SecretsVault/libs/**/*.so
