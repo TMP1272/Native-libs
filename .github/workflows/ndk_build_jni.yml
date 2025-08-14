@@ -1,0 +1,41 @@
+name: Build & Optimize Native .so
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-native:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: 📥 Checkout code
+      uses: actions/checkout@v3
+
+    - name: 📦 Setup Android NDK
+      uses: nttld/setup-ndk@v1
+      with:
+        ndk-version: r28c
+
+    - name: 🛠️ Build native library (.so)
+      run: |
+        cd Native-build/Src/Jni/SecretsVault
+        ndk-build NDK_PROJECT_PATH=. \
+          APP_BUILD_SCRIPT=Android.mk \
+          NDK_APPLICATION_MK=Application.mk \
+          NDK_TOOLCHAIN_VERSION=clang
+
+    - name: 🔪 Strip symbols to reduce size
+      run: |
+        find Native-Build/Src/Jni/SecretsVault/libs -name "*.so" | while read sofile; do
+          echo "Stripping $sofile"
+          $ANDROID_NDK/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-strip "$sofile"
+        done
+
+    - name: 📤 Upload .so files as artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: native-libs
+        path: Native-Build/Src/Jni/SecretsVault/libs/**/*.so
