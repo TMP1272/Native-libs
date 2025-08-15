@@ -28,24 +28,6 @@ jobs:
           NDK_APPLICATION_MK=Application.mk \
           NDK_TOOLCHAIN_VERSION=clang
 
-    - name: 📥 Copy libc++_shared.so from NDK
-      run: |
-        ABI_LIST="arm64-v8a armeabi-v7a"
-        for ABI in $ABI_LIST; do
-          SRC="$ANDROID_NDK/sources/cxx-stl/llvm-libc++/libs/$ABI/libc++_shared.so"
-          DEST="Native-Build/Src/Jni/SecretsVault/obj/local/$ABI/"
-          mkdir -p "$DEST"
-          cp "$SRC" "$DEST"
-          echo "Copied $SRC to $DEST"
-        done
-
-    - name: 🔪 Strip symbols to reduce size
-      run: |
-        find Native-Build/Src/Jni/SecretsVault/obj/local -name "*.so" | while read sofile; do
-          echo "Stripping $sofile"
-          $ANDROID_NDK/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-strip "$sofile"
-        done
-
     - name: 📤 Upload .so files as artifact
       uses: actions/upload-artifact@v4
       with:
