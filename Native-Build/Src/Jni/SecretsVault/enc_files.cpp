@@ -5,7 +5,7 @@
 #include <cstring>
 
 extern "C" {
-    #include "aes/aes.h"
+    #include "aes.h"
 }
 
 // 🔐 Khóa AES
