@@ -31,4 +31,3 @@ jobs:
       with:
         name: encrypted-tokens
         path: encrypted_tokens.txt
-        
