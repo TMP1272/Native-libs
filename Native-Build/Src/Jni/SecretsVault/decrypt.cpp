@@ -122,6 +122,15 @@ void initSecureStore() {
     };
 }
 
+std::map<std::string, std::vector<uint8_t>> apikeyMapSecure;
+
+void initFirebase() {
+    apikeyMapSecure["firebase_api_key"] = {
+        0xBC, 0x62, 0x87, 0xE7, 0xB0, 0x1D, 0xCB, 0xBB, 0x2E, 0xB6, 0x93, 0xB5, 0xB9, 0x5F, 0xF9, 0xF0, 
+        0x39, 0xAA, 0xF3, 0xB8, 0x81, 0xAF, 0x8E, 0xEC, 0xAD, 0xB9, 0xF4, 0x3C, 0xC8, 0x6F, 0x43, 0x2D
+    };
+}
+
 extern "C"
 JNIEXPORT jstring JNICALL
 Java_com_tmp1272_lib_nativelib_SecureStore_getValue(JNIEnv *env, jobject, jstring idStr) {
@@ -131,6 +140,14 @@ Java_com_tmp1272_lib_nativelib_SecureStore_getValue(JNIEnv *env, jobject, jstrin
     env->ReleaseStringUTFChars(idStr, idChars);
 
     std::string result = decryptToken(strMapSecure, id);
+    return result.empty() ? nullptr : env->NewStringUTF(result.c_str());
+}
+
+extern "C"
+JNIEXPORT jstring JNICALL
+Java_com_tmp1272_lib_nativelib_FirebaseKeyProvider_getFirebaseApiKey(JNIEnv *env, jobject) {
+    initFirebase();
+    std::string result = decryptToken(apikeyMapSecure, "firebase_api_key");
     return result.empty() ? nullptr : env->NewStringUTF(result.c_str());
 }
 
