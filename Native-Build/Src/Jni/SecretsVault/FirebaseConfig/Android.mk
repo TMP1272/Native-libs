@@ -2,8 +2,8 @@ LOCAL_PATH := $(call my-dir)
 
 include $(CLEAR_VARS)
 LOCAL_MODULE       := firebaseconfig
-LOCAL_SRC_FILES    := ../decrypt.cpp $(LOCAL_PATH)/../../../../Include/aes.c
-LOCAL_C_INCLUDES   := $(LOCAL_PATH)/../../../../../Include
+LOCAL_SRC_FILES    := ../decrypt.cpp $(LOCAL_PATH)/Include/aes.c
+LOCAL_C_INCLUDES   := $(LOCAL_PATH)/Include
 LOCAL_STRIP_MODULE := true
 
 LOCAL_LDLIBS  += -llog
