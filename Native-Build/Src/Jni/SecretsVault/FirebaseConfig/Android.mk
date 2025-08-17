@@ -2,7 +2,7 @@ LOCAL_PATH := $(call my-dir)
 
 include $(CLEAR_VARS)
 LOCAL_MODULE       := firebaseconfig
-LOCAL_SRC_FILES    := decryptfisecoig.cpp aes.c
+LOCAL_SRC_FILES    := decryptfisecoig.cpp -I./Include/aes.c
 LOCAL_C_INCLUDES   := $(LOCAL_PATH)/../../../../../Include
 LOCAL_STRIP_MODULE := true
 
