@@ -16,4 +16,4 @@ LOCAL_LDLIBS += -llog
 
 include $(BUILD_SHARED_LIBRARY)
 
-include $(LOCAL_PATH)/../../../../FirebaseConfig/Android.mk
+include $(LOCAL_PATH)/FirebaseConfig/Android.mk
