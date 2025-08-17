@@ -46,7 +46,9 @@ int main() {
         {"firebase_url", ""},
         {"project_id", ""},
         {"mobilesdk_app_id", ""},
-        {"api_key", ""}
+        {"api_key", ""},
+        {"client_id", ""},
+        {"certificate_hash", ""}
     };
 
     std::ofstream out("encrypted_strings.txt");
