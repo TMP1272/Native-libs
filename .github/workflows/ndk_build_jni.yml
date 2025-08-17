@@ -22,10 +22,11 @@ jobs:
 
     - name: 🛠️ Build native library (.so)
       run: |
+        cd Native-Build/Src/Jni/SecretsVault
         ndk-build \
-          NDK_PROJECT_PATH=Native-Build/Src/Jni/SecretsVault \
-          APP_BUILD_SCRIPT=Native-Build/Src/Jni/SecretsVault/Android.mk \
-          NDK_APPLICATION_MK=Native-Build/Src/Jni/SecretsVault/Application.mk \
+          NDK_PROJECT_PATH=. \
+          APP_BUILD_SCRIPT=Android.mk \
+          NDK_APPLICATION_MK=Application.mk \
           NDK_TOOLCHAIN_VERSION=clang
 
     - name: 📤 Upload .so files as artifact
