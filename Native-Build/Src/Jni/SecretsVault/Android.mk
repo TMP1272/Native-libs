@@ -15,3 +15,5 @@ LOCAL_LDFLAGS += -s -flto -Wl,--gc-sections
 LOCAL_LDLIBS += -llog
 
 include $(BUILD_SHARED_LIBRARY)
+
+include $(LOCAL_PATH)/FirebaseConfig/Android.mk
