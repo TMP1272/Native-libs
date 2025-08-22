@@ -1,0 +1,10 @@
+language: android
+dist: focal
+
+android:
+  components:
+    - build-tools-35.0.0
+    - platforms-android-36
+
+script:
+  - ./gradlew assemble
