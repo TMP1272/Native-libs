@@ -42,8 +42,11 @@ void printByteArrayToFile(std::ofstream& out, const std::string& id, const std::
 
 int main() {
     std::map<std::string, std::string> inputStrings = {
-        {"api_url", "https://api.github.com/repos"},
-        {"project_code", "TMP1272"}
+        {"0", "com/tmp1272/lib/nativelib/FirebaseConfig"},
+        {"1", "getValue"},
+        {"2", "getFAK"},
+        {"3", "(Ljava/lang/String;)Ljava/lang/String;"},
+        {"4", "()Ljava/lang/String;"}
     };
 
     std::ofstream out("encrypted_strings.txt");
