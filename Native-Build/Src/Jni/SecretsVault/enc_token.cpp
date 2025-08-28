@@ -31,7 +31,7 @@ void aes256_encrypt_cbc(std::vector<uint8_t>& data, const uint8_t* key, const ui
 }
 
 void printByteArrayToFile(std::ofstream& out, const std::string& id, const std::vector<uint8_t>& data) {
-    out << "strMapSecure[\"" << id << "\"] = {";
+    out << "strMap[\"" << id << "\"] = {";
     for (size_t i = 0; i < data.size(); ++i) {
         if (i % 16 == 0) out << "\n  ";
         out << "0x" << std::hex << std::uppercase << std::setw(2)
@@ -42,8 +42,8 @@ void printByteArrayToFile(std::ofstream& out, const std::string& id, const std::
 
 int main() {
     std::map<std::string, std::string> inputStrings = {
-        {"github_token_getdata", "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"},
-        {"github_token_putdata", "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"}
+        {"github_token_getdata", "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"},
+        {"github_token_putdata", "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"}
     };
 
     std::ofstream out("encrypted_tokens.txt");
