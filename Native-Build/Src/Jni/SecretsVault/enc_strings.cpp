@@ -31,7 +31,7 @@ void aes256_encrypt_cbc(std::vector<uint8_t>& data, const uint8_t* key, const ui
 }
 
 void printByteArrayToFile(std::ofstream& out, const std::string& id, const std::vector<uint8_t>& data) {
-    out << "strMapSecure[\"" << id << "\"] = {";
+    out << "strMap[\"" << id << "\"] = {";
     for (size_t i = 0; i < data.size(); ++i) {
         if (i % 16 == 0) out << "\n  ";
         out << "0x" << std::hex << std::uppercase << std::setw(2)
@@ -42,11 +42,12 @@ void printByteArrayToFile(std::ofstream& out, const std::string& id, const std::
 
 int main() {
     std::map<std::string, std::string> inputStrings = {
-        {"0", "com/tmp1272/lib/nativelib/FirebaseConfig"},
-        {"1", "getValue"},
-        {"2", "getFAK"},
-        {"3", "(Ljava/lang/String;)Ljava/lang/String;"},
-        {"4", "()Ljava/lang/String;"}
+        {"g_tk", "getToken"},
+        {"g_vl", "getValue"},
+        {"l_1", "()Ljava/lang/String;"},
+        {"l_2", "(Ljava/lang/String;)Ljava/lang/String;"},
+        {"lc_1", "com/tmp1272/lib/nativelib/TokenProvider"},
+        {"lc_2", "com/tmp1272/lib/nativelib/SecureStore"}
     };
 
     std::ofstream out("encrypted_strings.txt");
