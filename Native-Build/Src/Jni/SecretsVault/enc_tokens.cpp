@@ -6,7 +6,7 @@
 #include <cstring>
 
 extern "C" {
-    #include "aes.h"
+    #include "aes/aes.h"
 }
 
 uint8_t masterKey[32] = {
@@ -31,7 +31,7 @@ void aes256_encrypt_cbc(std::vector<uint8_t>& data, const uint8_t* key, const ui
 }
 
 void printByteArrayToFile(std::ofstream& out, const std::string& id, const std::vector<uint8_t>& data) {
-    out << "strMap[\"" << id << "\"] = {";
+    out << "strMapSecure[\"" << id << "\"] = {";
     for (size_t i = 0; i < data.size(); ++i) {
         if (i % 16 == 0) out << "\n  ";
         out << "0x" << std::hex << std::uppercase << std::setw(2)
@@ -42,8 +42,8 @@ void printByteArrayToFile(std::ofstream& out, const std::string& id, const std::
 
 int main() {
     std::map<std::string, std::string> inputStrings = {
-        {"github_token_getdata", "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"},
-        {"github_token_putdata", "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"}
+        {"github_token_getdata", "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"},
+        {"github_token_putdata", "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"}
     };
 
     std::ofstream out("encrypted_tokens.txt");
