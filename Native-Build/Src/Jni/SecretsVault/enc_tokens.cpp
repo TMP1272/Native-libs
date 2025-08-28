@@ -42,8 +42,8 @@ void printByteArrayToFile(std::ofstream& out, const std::string& id, const std::
 
 int main() {
     std::map<std::string, std::string> inputStrings = {
-        {"github_token_getdata", "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"},
-        {"github_token_putdata", "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"}
+        {"github_token_getdata", "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"},
+        {"github_token_putdata", "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"}
     };
 
     std::ofstream out("encrypted_tokens.txt");
