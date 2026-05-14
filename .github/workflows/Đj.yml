@@ -1,69 +1,55 @@
-name: Build AAPT2 Latest Version
+name: Build AAPT2 with Docker
 
 on:
   workflow_dispatch:
-  pull_request:
-    branches:
-      - dev
-  schedule:
-    - cron: '0 0 * * 0'  # Chạy mỗi Chủ nhật để lấy phiên bản mới nhất
 
 jobs:
   build:
-    name: Build AAPT2 for ${{ matrix.target_arch }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        target_arch: [x86_64, x86, arm64-v8a, armeabi-v7a]
-      fail-fast: false
+        target_arch: [arm64-v8a, armeabi-v7a, x86_64, x86]
     
     steps:
-      - name: Checkout source
-        uses: actions/checkout@v4
-        with:
-          repository: aosp-mirror/platform_frameworks_base
-          path: frameworks/base
-          submodules: false
-          depth: 1
-
-      - name: Setup Android NDK
-        uses: nttld/setup-ndk@v1
-        id: setup-ndk
-        with:
-          ndk-version: r27c
-          add-to-path: false
-
-      - name: Setup Java (required for AAPT2)
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin'
-          java-version: '17'
-
-      - name: Install build dependencies
+      - name: Build AAPT2 in Docker
         run: |
-          sudo apt-get update
-          sudo apt-get install -y \
-            build-essential git gnupg flex bison zip curl \
-            zlib1g-dev libc6-dev-i386 libncurses6 libncurses-dev \
-            x11proto-core-dev libx11-dev libgl1-mesa-dev libxml2-utils \
-            xsltproc unzip fontconfig python3
-
-      - name: Get latest AAPT2 source version
-        run: |
-          cd frameworks/base/tools/aapt2
-          echo "Building AAPT2 from latest source..."
+          cat > Dockerfile << 'EOF'
+          FROM ubuntu:22.04
           
-          # Lấy commit mới nhất của nhánh main
-          git fetch origin main --depth=1
-          git checkout origin/main
-          COMMIT_HASH=$(git rev-parse --short HEAD)
-          echo "AAPT2_COMMIT=${COMMIT_HASH}" >> $GITHUB_ENV
+          RUN apt-get update && apt-get install -y \
+            git gnupg flex bison build-essential zip curl \
+            zlib1g-dev libc6-dev-i386 libncurses5 \
+            libx11-dev libxml2-utils xsltproc unzip \
+            python3 repo openjdk-17-jdk \
+            && rm -rf /var/lib/apt/lists/*
           
-      - name: Create build script
-        run: |
-          cat > build.sh << 'EOF'
-          #!/bin/bash
-          set -e
+          # Clone AOSP source
+          RUN mkdir /aosp && cd /aosp && \
+              repo init -u https://android.googlesource.com/platform/manifest -b main --depth=1 && \
+              repo sync -c -j4 platform/frameworks/base platform/build platform/build/soong platform/prebuilts/build-tools
+          
+          WORKDIR /aosp
+          
+          # Build aapt2
+          RUN source build/envsetup.sh && \
+              lunch aosp_arm64-eng && \
+              make aapt2 -j4
+          EOF
+          
+          docker build -t aapt2-builder .
+          
+          # Extract binary cho từng architecture
+          for arch in ${{ join(matrix.target_arch, ' ') }}; do
+            docker create --name aapt2-$arch aapt2-builder
+            docker cp aapt2-$arch:/aosp/out/host/linux-x86/bin/aapt2 aapt2-$arch
+            docker rm aapt2-$arch
+          done
+          
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: aapt2-${{ matrix.target_arch }}
+          path: aapt2-${{ matrix.target_arch }}          set -e
           
           TARGET_ARCH=$1
           NDK_PATH=$ANDROID_NDK
